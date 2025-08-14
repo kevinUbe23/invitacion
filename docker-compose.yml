@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+      DATABASE_URL: ${DATABASE_URL}      # ej: mysql://root:CLAVE@db:3306/nahomy
+      SESSION_SECRET: ${SESSION_SECRET}
+      RSVP_CUTOFF_ISO: ${RSVP_CUTOFF_ISO}
+      PORT: "3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  # Importa invitados.xlsx una sola vez (si existe en el volumen)
+  importer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["sh", "-lc", "[ -f /seed/invitados.xlsx ] && node scripts/import-excel.js /seed/invitados.xlsx || echo 'No seed file found, skipping'"]
+    volumes:
+      - seed_data:/seed
+    restart: "no"
+
+volumes:
+  mysql_data:
+  seed_data:
