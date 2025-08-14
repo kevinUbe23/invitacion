@@ -1,0 +1,28 @@
+// prisma/schema.prisma
+generator client { provider = "prisma-client-js" }
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Household {
+  id               Int       @id @default(autoincrement())
+  phone            String    @unique @db.VarChar(20) // ← antes 10, ahora 20
+  passwordHash     String
+  familyName       String
+  maxGuests        Int
+  confirmedGuests  Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  RSVPs            RSVP[]
+}
+
+model RSVP {
+  id          Int        @id @default(autoincrement())
+  household   Household  @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  householdId Int        @unique
+  count       Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt @default(now())
+}

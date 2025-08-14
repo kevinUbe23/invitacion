@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --rose-gold-h: 350;
+  --rose-gold-c: 0.12;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@theme {
+  --font-script: 'Dancing Script', cursive;
+  --font-dancing-script: 'Dancing Script', cursive;
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-montserrat-variable: 'Montserrat Variable', sans-serif;
+  --font-montserrat-bold: 'Montserrat Bold', sans-serif;
+  --font-montserrat-bold-variable: 'Montserrat Bold Variable', sans-serif;
+  /* 2. Definimos nuestra paleta directamente como variables CSS */
+  --color-white: oklch(100% 0 0);
+  --color-black: oklch(0% 0 0);
+  --color-transparent: transparent;
+
+  /* Nuestro color de fondo personalizado */
+  --color-background: oklch(98.5% 0.01 var(--rose-gold-h));
+
+  /* Paleta "Rose Gold" completa */
+  --color-rose-gold-50: oklch(98% 0.02 var(--rose-gold-h));
+  --color-rose-gold-100: oklch(96% 0.04 var(--rose-gold-h));
+  --color-rose-gold-200: oklch(92% 0.07 var(--rose-gold-h));
+  --color-rose-gold-300: oklch(85% 0.10 var(--rose-gold-h));
+  --color-rose-gold-400: oklch(78% var(--rose-gold-c) var(--rose-gold-h));
+  --color-rose-gold-500: oklch(72% var(--rose-gold-c) var(--rose-gold-h));
+  --color-rose-gold-600: oklch(65% var(--rose-gold-c) var(--rose-gold-h));
+  --color-rose-gold-700: oklch(58% var(--rose-gold-c) var(--rose-gold-h));
+  --color-rose-gold-800: oklch(50% 0.11 var(--rose-gold-h));
+  --color-rose-gold-900: oklch(42% 0.10 var(--rose-gold-h));
+
+
+}
