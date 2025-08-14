@@ -3,7 +3,6 @@ node_modules
 dist
 .git
 .gitignore
-docker-compose.yml
 *.log
 # Si mantienes la carpeta docker, permite el entrypoint:
 # docker/*
